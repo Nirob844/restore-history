@@ -1,4 +1,7 @@
 import { useState } from "react";
+import HistorySection from "./components/history/HistorySection";
+import InputSection from "./components/inputs/InputSection";
+import OperationSection from "./components/operations/OperationSection";
 
 function* generateId() {
   let id = 0;
@@ -68,62 +71,16 @@ const App = () => {
   return (
     <div style={{ width: '50%', margin: '0 auto' }}>
       <h1>Result: {result}</h1>
-      <div>
-        <p>Inputs</p>
-        <input
-          type="number"
-          value={inputState.a}
-          onChange={handleInputChange}
-          name="a"
-        />
-        <input
-          type="number"
-          value={inputState.b}
-          onChange={handleInputChange}
-          name="b"
-        />
-      </div>
-      <div>
-        <p>Operations</p>
-        <button onClick={() => handleArithmeticOps('+')}>+</button>
-        <button onClick={() => handleArithmeticOps('-')}>-</button>
-        <button onClick={() => handleArithmeticOps('*')}>*</button>
-        <button onClick={() => handleArithmeticOps('/')}>/</button>
-        <button onClick={() => handleArithmeticOps('%')}>%</button>
-        <button onClick={handleClearOps}>Clear</button>
-      </div>
-      <div>
-        <p>History</p>
-        {histories.length === 0 ? (
-          <p>
-            <small>There is no history</small>
-          </p>
-        ) : (
-          <ul>
-            {histories.map((history) => (
-              <li key={history.id}>
-                <p>
-                  Operations: {history.inputs.a} {history.operation}{' '}
-                  {history.inputs.b}, Result = {history.result}
-                </p>
-                <small>
-                  {history.date.toLocaleDateString()}{' '}
-                  {history.date.toLocaleTimeString()}
-                </small>
-                <br />
-                <button
-                  onClick={() => handleRestoreBtn(history)}
-                  disabled={
-                    restoredHistory !== null && restoredHistory === history.id
-                  }
-                >
-                  Restore
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+      <InputSection inputs={inputState} handleInputChange={handleInputChange} />
+      <OperationSection
+        handleArithmeticOps={handleArithmeticOps}
+        handleClearOps={handleClearOps}
+      />
+      <HistorySection
+        histories={histories}
+        handleRestoreBtn={handleRestoreBtn}
+        restoredHistory={restoredHistory}
+      />
     </div>
   )
 }
